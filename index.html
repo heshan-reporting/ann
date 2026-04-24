@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CL — Meta Ads Intelligence Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+════════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark" id="account-name">CL</div>
+    <div class="logo-sub">Meta Ads Intelligence</div>
+  </div>
+
+  <div class="nav-section-label">Dashboard</div>
+
+  <div class="nav-item active" data-section="overview">
+    <span class="nav-icon">📊</span>
+    <span>Overview</span>
+  </div>
+  <div class="nav-item" data-section="flags">
+    <span class="nav-icon">🚨</span>
+    <span>Alerts & Flags</span>
+  </div>
+  <div class="nav-item" data-section="campaigns">
+    <span class="nav-icon">📁</span>
+    <span>Campaigns</span>
+  </div>
+  <div class="nav-item" data-section="ads">
+    <span class="nav-icon">🎯</span>
+    <span>Ad Performance</span>
+  </div>
+  <div class="nav-item" data-section="insights">
+    <span class="nav-icon">💡</span>
+    <span>Insights</span>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="attr-tag" id="attr-label">7-day click / 1-day view</div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <h1>Meta Ads Intelligence Dashboard</h1>
+      <div class="header-sub">Account: <strong id="account-name-2">CL</strong> · Currency: AUD · Attribution: 7-day click / 1-day view</div>
+    </div>
+    <div class="header-right">
+      <span class="period-badge" id="period-label">Apr 1 – Apr 24, 2026</span>
+      <span class="wow-badge">⚠️ WoW unavailable — single-period export</span>
+    </div>
+  </header>
+
+  <!-- PAGE BODY -->
+  <div class="page-body">
+
+    <!-- ══ SECTION: OVERVIEW ══ -->
+    <section class="section active-section" id="section-overview">
+
+      <!-- Account Summary Row -->
+      <div class="stat-grid" style="margin-bottom:28px;">
+        <div class="stat-item">
+          <div class="stat-label">Total Spend</div>
+          <div class="stat-value">$112,718</div>
+          <div class="stat-sub">AUD · Apr 1–24, 2026</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Total Reach</div>
+          <div class="stat-value">8.6M</div>
+          <div class="stat-sub">Unique accounts (AU)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Avg Frequency</div>
+          <div class="stat-value" style="color:var(--status-green)">2.02</div>
+          <div class="stat-sub">Healthy range (&lt;3.5)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">LPV Rate</div>
+          <div class="stat-value" style="color:var(--status-amber)">63.9%</div>
+          <div class="stat-sub">⚠️ Below 70% threshold</div>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <h2>Key Performance Indicators</h2>
+      </div>
+      <div id="kpi-cards"></div>
+
+      <!-- Charts Row 1 -->
+      <div class="section-header">
+        <span class="section-icon">📈</span>
+        <h2>Spend & Efficiency Analysis</h2>
+      </div>
+      <div class="charts-grid-3">
+        <div class="chart-card">
+          <div class="chart-title">Campaign Spend Distribution</div>
+          <div class="chart-subtitle">Top 10 campaigns by spend · Colour = objective type</div>
+          <div class="legend">
+            <span><span class="legend-dot" style="background:#4F6EF7"></span>Reach</span>
+            <span><span class="legend-dot" style="background:#F59E0B"></span>Engagement</span>
+            <span><span class="legend-dot" style="background:#06B6D4"></span>Lead / Conv</span>
+            <span><span class="legend-dot" style="background:#8B5CF6"></span>Traffic</span>
+          </div>
+          <div class="chart-canvas-wrap-lg">
+            <canvas id="chart-campaign-spend"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Budget Mix by Objective</div>
+          <div class="chart-subtitle">Total spend allocation across campaign types</div>
+          <div class="chart-canvas-wrap-lg">
+            <canvas id="chart-cpm-type"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row 2 -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">Cost per Result · Lead &amp; Conversion Campaigns</div>
+          <div class="chart-subtitle">Green &lt;$5 · Amber $5–$12 · Red &gt;$12</div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chart-cpl"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Frequency vs CPM · Audience Health</div>
+          <div class="chart-subtitle">Bubble size = relative spend · Red = frequency ≥3.5 (burnout zone)</div>
+          <div class="chart-canvas-wrap">
+            <canvas id="chart-freq"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION: FLAGS ══ -->
+    <section class="section" id="section-flags">
+      <div class="section-header">
+        <span class="section-icon">🚨</span>
+        <h2>Validation Alerts &amp; Data Flags</h2>
+      </div>
+      <div class="flags-grid" id="flags-container"></div>
+    </section>
+
+    <!-- ══ SECTION: CAMPAIGNS ══ -->
+    <section class="section" id="section-campaigns">
+      <div class="section-header">
+        <span class="section-icon">📁</span>
+        <h2>Campaign Performance — All 22 Active/Recent Campaigns</h2>
+      </div>
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div>
+            <div class="table-toolbar-title">Campaign Breakdown</div>
+            <div class="table-toolbar-sub">Sorted by Spend · 34 total campaigns in account</div>
+          </div>
+          <div class="legend" style="margin-bottom:0">
+            <span><span class="legend-dot" style="background:var(--status-green)"></span>CPL/CPM Green</span>
+            <span><span class="legend-dot" style="background:var(--status-amber)"></span>Amber</span>
+            <span><span class="legend-dot" style="background:var(--status-red)"></span>Red</span>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Type</th>
+                <th>Spend</th>
+                <th>Results</th>
+                <th>Cost/Result</th>
+                <th>CPM</th>
+                <th>Frequency</th>
+                <th>LPV Rate</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="campaign-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: AD PERFORMANCE ══ -->
+    <section class="section" id="section-ads">
+      <div class="section-header">
+        <span class="section-icon">🎯</span>
+        <h2>Ad-Level Performance — Lead &amp; Conversion Campaigns</h2>
+      </div>
+
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div>
+            <div class="table-toolbar-title">Conversion &amp; Lead Form Ads</div>
+            <div class="table-toolbar-sub">Sorted by Results · Click any column header to re-sort</div>
+          </div>
+          <input type="text" id="ad-search" class="search-input" placeholder="🔍  Search ad or campaign…" />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th data-sort="ad">Ad Name</th>
+                <th data-sort="results" class="sort-desc">Results</th>
+                <th data-sort="cpr">Cost/Result</th>
+                <th data-sort="spend">Spend</th>
+                <th data-sort="freq">Frequency</th>
+                <th data-sort="cpm">CPM</th>
+                <th data-sort="lpv">LPV Rate</th>
+                <th>Quality Rank</th>
+              </tr>
+            </thead>
+            <tbody id="ad-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Traffic Ads Table -->
+      <div class="section-header" style="margin-top:16px;">
+        <span class="section-icon">🚦</span>
+        <h2>Job Portal Traffic Ads (LPV Objective)</h2>
+      </div>
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div>
+            <div class="table-toolbar-title">Seg 8 – Job Portal Traffic · $5,313 spend · 9,744 LPVs · $0.55/LPV</div>
+            <div class="table-toolbar-sub">High-volume, low-cost traffic driver. LPV rate = 87.5%+ across all ads — best in account.</div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ad Name</th>
+                <th>LPVs</th>
+                <th>Cost/LPV</th>
+                <th>Spend</th>
+                <th>Freq</th>
+                <th>CPM</th>
+                <th>Link Clicks</th>
+                <th>Quality Rank</th>
+              </tr>
+            </thead>
+            <tbody id="traffic-tbody">
+              <tr><td>Ad 06</td><td class="num" style="color:var(--status-green);font-family:'JetBrains Mono',monospace"><strong>4,537</strong></td><td class="num status-green">$0.58</td><td class="num">$2,623.60</td><td class="num status-green">1.51</td><td class="num status-green">$7.01</td><td class="num">5,202</td><td><span class="badge badge-neutral">Average</span></td></tr>
+              <tr><td>Ad 07</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>2,865</strong></td><td class="num status-green">$0.53</td><td class="num">$1,505.31</td><td class="num status-green">1.54</td><td class="num status-green">$8.45</td><td class="num">3,275</td><td><span class="badge badge-neutral">Average</span></td></tr>
+              <tr><td>Ad 04</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>1,302</strong></td><td class="num status-green">$0.54</td><td class="num">$703.47</td><td class="num status-green">1.44</td><td class="num status-green">$7.01</td><td class="num">1,482</td><td><span class="badge badge-neutral">Average</span></td></tr>
+              <tr><td>Ad 03</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>571</strong></td><td class="num status-green">$0.46</td><td class="num">$263.03</td><td class="num status-green">1.24</td><td class="num status-green">$7.35</td><td class="num">649</td><td><span class="badge badge-red">Below avg</span></td></tr>
+              <tr><td>Ad 05</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>283</strong></td><td class="num status-green">$0.39</td><td class="num">$109.08</td><td class="num status-green">1.09</td><td class="num status-green">$4.86</td><td class="num">299</td><td><span class="badge badge-red">Below avg</span></td></tr>
+              <tr><td>Ad 01</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>143</strong></td><td class="num status-green">$0.60</td><td class="num">$86.12</td><td class="num status-green">1.10</td><td class="num status-green">$6.12</td><td class="num">170</td><td><span class="badge badge-red">Below avg</span></td></tr>
+              <tr><td>Ad 02</td><td class="num" style="font-family:'JetBrains Mono',monospace"><strong>42</strong></td><td class="num status-green">$0.54</td><td class="num">$22.80</td><td class="num status-green">1.33</td><td class="num status-green">$6.57</td><td class="num">52</td><td><span class="badge badge-red">Below avg</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ SECTION: INSIGHTS ══ -->
+    <section class="section" id="section-insights">
+      <div class="section-header">
+        <span class="section-icon">💡</span>
+        <h2>Prioritised Insights &amp; Action Items</h2>
+      </div>
+      <div class="insights-grid" id="insights-container"></div>
+
+      <!-- Benchmark Reference -->
+      <div class="section-header" style="margin-top:8px;">
+        <span class="section-icon">📐</span>
+        <h2>Benchmark Thresholds (Derived from Data)</h2>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-label">CPL Green</div>
+          <div class="stat-value status-green">&lt; $5</div>
+          <div class="stat-sub">Target CPL threshold</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">CPL Amber</div>
+          <div class="stat-value status-amber">$5 – $12</div>
+          <div class="stat-sub">Monitor closely</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">CPM Green</div>
+          <div class="stat-value status-green">&lt; $10</div>
+          <div class="stat-sub">Avg account CPM $9.76</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Frequency Warn</div>
+          <div class="stat-value status-amber">&gt; 3.5</div>
+          <div class="stat-sub">Creative refresh needed</div>
+        </div>
+      </div>
+
+    </section>
+
+  </div><!-- /page-body -->
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
